@@ -13,5 +13,7 @@ print((num_1 % 1000)//10 + (num_2 % 1000)//10) # 90
 num_1 = 13.42
 num_2 = 42.13
 print(int(num_1) == round((num_2 % 1)*100) or int(num_2) == round((num_1 % 1)*100)) # True
+# второй вариан, без round
+print(num_1*100 - int(num_1)*100 == int(num_2) or num_2*100 - int(num_2)*100 == int(num_1))
 
 
