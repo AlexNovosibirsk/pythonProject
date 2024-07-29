@@ -1,36 +1,42 @@
-
+"""
+Задача "Рассылка писем"
+"""
 list_of_notification = ("Письмо успешно отправлено с адреса",
                         "НЕСТАНДАРТНЫЙ ОТПРАВИТЕЛЬ! Письмо отправлено с адреса",
                         "Невозможно отправить письмо с адреса",
                         "Нельзя отправить письмо самому себе!",
                         "на адрес")
-templates = ("@", ".com", ".ru", ".net")
+templates = (".com", ".ru", ".net")
+default_sender = "university.help@gmail.com"
 
 
 def check_email(email):
-    if templates[0] in email:
+    result = False
+    list_ = email.split("@")
+    if len(list_) == 2:
         for i in templates:
-            if email.endswith(i):
-                return True
-    else:
-        return False
+            list_ = email.split(i)
+            if len(list_) == 2 and list_[1] == "":
+                result = True
+    return result
 
 
-def send_email(message="", recipient="", *, sender="university.help@gmail.com"):
-    index = 0
+def send_email(message="", recipient="", *, sender=default_sender):
     flag_valid_s = check_email(sender)
     flag_valid_r = check_email(recipient)
-    if flag_valid_r and flag_valid_s:
-        if recipient != sender and sender == "university.help@gmail.com":
-            index = 0
-        elif recipient != sender and sender != "university.help@gmail.com":
-            index = 1
-        elif recipient == sender:
-            index = 3
-    elif not flag_valid_s and flag_valid_r:
-        index = 2
-
-    print(list_of_notification[index], sender, list_of_notification[4], recipient)
+    if not flag_valid_s and not flag_valid_r:
+        return
+    if not flag_valid_s and flag_valid_r:
+        print(list_of_notification[2], sender, list_of_notification[4], recipient)
+        return
+    elif recipient != sender == default_sender:
+        print(list_of_notification[0], sender, list_of_notification[4], recipient)
+        return
+    elif recipient != sender != default_sender:
+        print(list_of_notification[1], sender, list_of_notification[4], recipient)
+        return
+    elif recipient == sender:
+        print(list_of_notification[3])
 
 
 send_email('Это сообщение для проверки связи', 'vasyok1337@gmail.com')
@@ -39,16 +45,9 @@ send_email('Пожалуйста, исправьте задание', 'urban.stu
 send_email('Напоминаю самому себе о вебинаре', 'urban.teacher@mail.ru', sender='urban.teacher@mail.ru')
 
 """
-Пример выполняемого кода (тесты):
-1. send_email('Это сообщение для проверки связи', 'vasyok1337@gmail.com')
-2. send_email('Вы видите это сообщение как лучший студент курса!', 'urban.fan@mail.ru', sender='urban.info@gmail.com')
-3. send_email('Пожалуйста, исправьте задание', 'urban.student@mail.ru', sender='urban.teacher@mail.uk')
-4. send_email('Напоминаю самому себе о вебинаре', 'urban.teacher@mail.ru', sender='urban.teacher@mail.ru')
-
-Вывод на консоль:
-1. Письмо успешно отправлено с адреса university.help@gmail.com на адрес vasyok1337@gmail.com
-2. НЕСТАНДАРТНЫЙ ОТПРАВИТЕЛЬ! Письмо отправлено с адреса urban.info@gmail.com на адрес urban.fan@mail.ru
-3. Невозможно отправить письмо с адреса urban.teacher@mail.uk на адрес urban.student@mail.ru
-4. Нельзя отправить письмо самому себе!
+Письмо успешно отправлено с адреса university.help@gmail.com на адрес vasyok1337@gmail.com
+НЕСТАНДАРТНЫЙ ОТПРАВИТЕЛЬ! Письмо отправлено с адреса urban.info@gmail.com на адрес urban.fan@mail.ru
+Невозможно отправить письмо с адреса urban.teacher@mail.uk на адрес urban.student@mail.ru
+Нельзя отправить письмо самому себе!
 """
 
