@@ -22,21 +22,20 @@ def check_email(email):
 
 
 def send_email(message="", recipient="", *, sender=default_sender):
-    flag_valid_s = check_email(sender)
-    flag_valid_r = check_email(recipient)
-    if not flag_valid_s and not flag_valid_r:
+    answer = ""
+    flag_valid_sender = check_email(sender)
+    flag_valid_recipient = check_email(recipient)
+    if not flag_valid_sender and not flag_valid_recipient:
         return
-    elif not flag_valid_s and flag_valid_r:
-        print(list_of_notification[2], sender, list_of_notification[4], recipient)
-        return
+    elif not flag_valid_sender and flag_valid_recipient:
+        answer = list_of_notification[2] + sender + list_of_notification[4] + recipient
     elif recipient == sender:
-        print(list_of_notification[3])
+        answer = list_of_notification[3]
     elif sender == default_sender:
-        print(list_of_notification[0], sender, list_of_notification[4], recipient)
-        return
+        answer = list_of_notification[0] + sender + list_of_notification[4] + recipient
     elif sender != default_sender:
-        print(list_of_notification[1], sender, list_of_notification[4], recipient)
-        return
+        answer = list_of_notification[1] + sender + list_of_notification[4] + recipient
+    print(answer)
 
 
 send_email('Это сообщение для проверки связи', 'vasyok1337@gmail.com')
