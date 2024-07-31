@@ -21,23 +21,30 @@
 """
 
 
+# 1. Функция с параметрами по умолчанию
 def print_params(a=1, b='строка', c=True):
     print(a, b, c)
 
 
-print_params()
-print_params(7)
-print_params(c=False)
-print_params(7, "String", False)
+print_params()  # 1 строка True
+print_params(7)  # 7 строка True
+print_params(c=False)  # 1 строка False
+print_params(7, "String", False)  # 7 String False
 
-print_params(b=25)
-print_params(c=[1,2,3])
+
+# 2. Распаковка параметров:
+print_params(b=25)  # 1 25 True
+print_params(c=[1, 2, 3])  # 1 строка [1, 2, 3]
+# здесь компилятор предупреждает о несоответствии ожидаемого и предлагаемого параметра,
+# передаваемого в функцию
+
 
 values_list = [7, "5.5", True]
 values_dict = {'a': 2, 'b': 5, 'c': 7}
+print_params(*values_list)  # 7 5.5 True
+print_params(**values_dict)  # 2 5 7
 
-print_params(*values_list)
-print_params(**values_dict)
 
-values_list_2 = [3, "3"]
-print_params(*values_list_2, 42)
+# 3. Распаковка + отдельные параметры:  Работает, количество элементов списка не больше параметров функции
+values_list_2 = [3.5, "Строка"]  # ["Строка", 3.5] ["Строка"] эти варианты списка также работают
+print_params(*values_list_2, 42)  # 3.5 Строка 42
