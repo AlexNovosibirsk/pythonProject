@@ -26,10 +26,6 @@ def calculate_structure_sum(*args):
         else:
             stack_.append(data) # сохраняем все не распакованные коллекции
 
-        # if (isinstance(data, list) or isinstance(data, dict) or
-        #         isinstance(data, tuple) or isinstance(data, set)):
-        #     stack.append(data)
-
     for i in range(len(stack_)):
         collection = stack_.pop() # берем одну из коллекций и отправляем на очередную распаковку
         print(collection) # посмотрим что будем отдавать далее
@@ -37,6 +33,7 @@ def calculate_structure_sum(*args):
             return summ + calculate_structure_sum(collection)
         if isinstance(collection, dict): # словарь надо дополнительно преобразовать
             return summ + calculate_structure_sum(set(collection.items()))
+
     return summ
 
 
@@ -62,59 +59,31 @@ print(calculate_structure_sum(data_structure)) # 99
 
 
 
+"""
+from queue import Queue
+q = Queue()
+from collections import deque
+stack = deque()
 
-# from queue import Queue
-# q = Queue()
-# from collections import deque
-# stack = deque()
-#
-#
-# def calculate_structure_sum_2(*args):
-#     summ = 0
-#     item = args[0]
-#     for data in item:
-#         if isinstance(data, int):
-#             summ += data
-#         elif isinstance(data, str):
-#             summ += len(data)
-#         else:
-#             q.put(data)
-#
-#     while not q.empty():
-#         collection = q.get()
-#         #print(collection)
-#         if isinstance(collection, list) or isinstance(collection, tuple):
-#             return summ + calculate_structure_sum_2(collection)
-#         if isinstance(collection, dict):
-#             return summ + calculate_structure_sum_2(set(collection.items()))
-#         if isinstance(collection, set):
-#             return summ + calculate_structure_sum_2(list(collection))
-#     return summ
-#
-#
-# print(calculate_structure_sum_2(data_structure))
-#
-# def calculate_structure_sum_3(*args):
-#     summ = 0
-#     item = args[0]
-#     for data in item:
-#         if isinstance(data, int):
-#             summ += data
-#         elif isinstance(data, str):
-#             summ += len(data)
-#         else:
-#             stack.append(data)
-#
-#     for i in range(len(stack)):
-#         collection = stack.pop()
-#         #print(collection)
-#         if isinstance(collection, list) or isinstance(collection, tuple):
-#             return summ + calculate_structure_sum_3(collection)
-#         if isinstance(collection, dict):
-#             return summ + calculate_structure_sum_3(set(collection.items()))
-#         if isinstance(collection, set):
-#             return summ + calculate_structure_sum_3(list(collection))
-#     return summ
-#
-#
-# print(calculate_structure_sum_3(data_structure))
+def calculate_structure_sum_2(*args):
+    summ = 0
+    for data in args[0]:
+        if isinstance(data, int):
+            summ += data
+        elif isinstance(data, str):
+            summ += len(data)
+        else:
+            q.put(data)
+
+    while not q.empty():
+        collection = q.get()
+        if isinstance(collection, list) or isinstance(collection, tuple):
+            return summ + calculate_structure_sum_2(collection)
+        if isinstance(collection, dict):
+            return summ + calculate_structure_sum_2(set(collection.items()))
+        if isinstance(collection, set):
+            return summ + calculate_structure_sum_2(list(collection))
+    return summ
+
+print(calculate_structure_sum_2(data_structure))
+"""
