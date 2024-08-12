@@ -26,7 +26,7 @@ def calculate_structure_sum(*args):
         else:
             stack_.append(data) # сохраняем все не распакованные коллекции
 
-    for i in range(len(stack_)):
+    if len(stack_) > 0:
         collection = stack_.pop() # берем одну из коллекций и отправляем на очередную распаковку
         print(collection) # посмотрим что будем отдавать далее
         if isinstance(collection, list) or isinstance(collection, tuple) or isinstance(collection, set):
