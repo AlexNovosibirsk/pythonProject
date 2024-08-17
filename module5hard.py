@@ -1,3 +1,7 @@
+"""
+Задание "Свой YouTube"
+"""
+
 import time
 
 
@@ -7,11 +11,11 @@ class UrTube:
     методы для работы с пользователями и с видеофайлами.
     """
     def __init__(self):
-        self.current_user = None # (текущий пользователь, User)
+        self.current_user = None  # (текущий пользователь, User)
         self.current_password = 0
         self.current_age = 0
-        self.videos = [] #(список объектов Video)
-        self.users = [] #(список объектов User)
+        self.videos = []  # (список объектов Video)
+        self.users = []  # (список объектов User)
 
     def search_users(self, nickname, password):
         for i in self.users:
@@ -36,7 +40,7 @@ class UrTube:
         self.current_user = None
 
     def __eq__(self, other):
-        return self == other
+        return self.current_user == other
 
     def __str__(self):
         return f"загружено {len(self.videos)} видео, зарегистрировано {len(self.users)} пользователей"
@@ -44,12 +48,15 @@ class UrTube:
     def __len__(self):
         return len(self.videos)
 
+    def __contains__(self, item):
+        return item in self.videos
+
     def add_videos(self, *args):
         for video_in in args:
             if isinstance(video_in, Video) is False:
                 print(f"объект  \"{video_in}\" не является объектом видео")
                 continue
-            if video_in in self.videos:
+            if self.__contains__(video_in): # if video_in in self.videos:
                 print(f"файл \"{video_in.title}\" уже имеется")
             else:
                 self.videos.append(video_in)
@@ -132,3 +139,34 @@ ur.watch_video('Для чего девушкам парень программи
 ur.log_in('vasya', 'F8098FM8fjm9jmi')
 ur.watch_video('Физика для всех')
 print(str(ur))
+
+"""
+    “Класс пользователя, содержащий атрибуты: логин, пароль, возраст”
+    
+
+    “Класс видео, содержащий атрибуты: название, продолжительность, ограничение по возрасту”
+    
+
+    Класс видеоХостинг, содержащий объекты видео и объекты пользователей,
+    методы для работы с пользователями и с видеофайлами.
+    
+файл "Лучший язык программирования 2024 года" добавлен
+объект  "abc" не является объектом видео
+файл "Для чего девушкам парень программист?" добавлен
+файл "Лучший язык программирования 2024 года" уже имеется
+объект  "7" не является объектом видео
+файл "Физика для всех" добавлен
+загружено 3 видео
+['Лучший язык программирования 2024 года']
+['Лучший язык программирования 2024 года', 'Для чего девушкам парень программист?']
+Пользователь vasya уже существует
+Пользователь vasya в аккаунте
+vasya
+1 2 3 4 5 6 7 8 9 10 Конец видео
+Пользователь vasya_pupkin уже существует
+Пользователь vasya_pupkin в аккаунте
+Вам нет 18 лет, пожалуйста покиньте страницу
+Пользователь vasya в аккаунте
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 Конец видео
+загружено 3 видео, зарегистрировано 3 пользователей
+"""
