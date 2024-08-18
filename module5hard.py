@@ -20,12 +20,15 @@ class UrTube:
     def search_users(self, nickname, password):
         for i in self.users:
             if nickname == i.nickname and hash(password) == i.password:
-                return i.nickname, i.password, i.age
+                return i
         return None
 
     def log_in(self, nickname, password):
-        self.current_user, self.current_password, self.current_age = self.search_users(nickname, password)
-        if self.search_users(nickname, password) is not None:
+        user = self.search_users(nickname, password)
+        if user is not None:
+            self.current_user = user.nickname
+            self.current_password = user.password
+            self.current_age = user.age
             print(f"Пользователь {nickname} в аккаунте")
 
     def register(self, nickname, password, age):
@@ -125,6 +128,7 @@ print(f"загружено {len(ur)} видео")
 print(ur.get_videos('лучший'))
 print(ur.get_videos('ПРОГ'))
 
+ur.watch_video('Физика для всех')
 ur.register('vasya_pupkin', 'lolkekcheburek', 13)
 ur.register('urban_pythonist', 'iScX4vIJClb9YQavjAgF', 25)
 ur.register('vasya', 'F8098FM8fjm9jmi', 22)
@@ -142,11 +146,9 @@ print(str(ur))
 
 """
     “Класс пользователя, содержащий атрибуты: логин, пароль, возраст”
-    
 
     “Класс видео, содержащий атрибуты: название, продолжительность, ограничение по возрасту”
     
-
     Класс видеоХостинг, содержащий объекты видео и объекты пользователей,
     методы для работы с пользователями и с видеофайлами.
     
@@ -159,6 +161,7 @@ print(str(ur))
 загружено 3 видео
 ['Лучший язык программирования 2024 года']
 ['Лучший язык программирования 2024 года', 'Для чего девушкам парень программист?']
+Войдите в аккаунт, чтобы смотреть видео
 Пользователь vasya уже существует
 Пользователь vasya в аккаунте
 vasya
