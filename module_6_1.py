@@ -47,7 +47,7 @@ class Plant:
 
     def get_edible(self):  # переопределяемый в наследниках геттер
         #  нужен в случае если атрибуты класса Plant были бы protected,
-        #  но они public из-за этих строк
+        #  но они public из-за этих строк:
         #  print(f"{self.name} не стал есть {food.name}")   print(f"{self.name} съел {food.name}")
         raise NotImplementedError("get_edible() должен быть переопределен")
 
@@ -75,33 +75,35 @@ class Fruit(Plant):
         self.edible = True  # съедобность
 
     def get_edible(self):
-
         return self.edible
 
 
 flower = Flower('Цветик семицветик')
 fruit = Fruit('Заводной апельсин')
+"""
+Конструктор Plant для <class '__main__.Flower'>
+Конструктор Plant для <class '__main__.Fruit'>
+"""
 print(fruit.__dict__)
 print(flower.__dict__)
-
+"""
+{'edible': True, 'name': 'Заводной апельсин'}
+{'edible': False, 'name': 'Цветик семицветик'}
+"""
 predator = Predator('Волк с Уолл-Стрит')
 mammal = Mammal('Хатико')
 
 mammal.eat(fruit)
 predator.eat(flower)
-
-print(mammal.__dict__)
-print(predator.__dict__)
-
 """
-Конструктор Plant для <class '__main__.Flower'>
-Конструктор Plant для <class '__main__.Fruit'>
-
-{'edible': True, 'name': 'Заводной апельсин'}
-{'edible': False, 'name': 'Цветик семицветик'}
-
 Хатико съел Заводной апельсин
 Волк с Уолл-Стрит не стал есть Цветик семицветик
+"""
+print(mammal.__dict__)
+print(predator.__dict__)
+"""
 {'alive': True, 'fed': True, 'name': 'Хатико'}
 {'alive': False, 'fed': False, 'name': 'Волк с Уолл-Стрит'}
 """
+
+
