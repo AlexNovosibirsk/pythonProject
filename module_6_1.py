@@ -2,13 +2,15 @@
 Задача "Съедобное, несъедобное":
 """
 
+
 class Animal:
+    alive = True  # живой
+    fed = False  # накормленный
+
     def __init__(self, name=""):
-        self.alive = True  # живой
-        self.fed = False  # накормленный
         self.name = name  # название животного.
 
-    def eat(self, food):
+    def eat(self, food: 'Plant'):
         if food.edible:
             self.alive = True
             self.fed = True
@@ -35,7 +37,7 @@ class Plant:
 
 
 class Flower(Plant):
-    edible = False
+    pass  # edible = False
 
 
 class Fruit(Plant):
