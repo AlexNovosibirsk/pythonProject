@@ -9,11 +9,8 @@ class Animal:
         self.fed = False  # накормленный
         self.name = name  # название животного.
 
-
-class Mammal(Animal):
     def eat(self, food):
-        print(food.Edible)
-        if food.get_edible():
+        if food.edible:
             self.alive = True
             self.fed = True
             print(f"{self.name} съел {food.name}")
@@ -21,89 +18,53 @@ class Mammal(Animal):
             self.alive = False
             self.fed = False
             print(f"{self.name} не стал есть {food.name}")
+
+
+class Mammal(Animal):
+    pass
 
 
 class Predator(Animal):
-    def eat(self, food):
-        print(food.Edible) # 2. проверим состояние унаследованного атрибута класса,
-        # но пользоваться будем атрибутами объекта
-        if food.get_edible():
-            self.alive = True
-            self.fed = True
-            print(f"{self.name} съел {food.name}")
-        else:
-            self.alive = False
-            self.fed = False
-            print(f"{self.name} не стал есть {food.name}")
+    pass
 
 
 class Plant:
-    Edible = "False" # 1. объявим атрибут класса и поменяем его состояние в наследниках
+    edible = False
 
     def __init__(self, name):
-        print(f"Конструктор Plant для {self.__class__}")
-        self.edible = True  # съедобность
-        self.name = name  # название растения
-
-    def get_edible(self):  # переопределяемый в наследниках геттер
-        #  нужен в случае если атрибуты класса Plant были бы protected,
-        #  но они public из-за этих строк:
-        #  print(f"{self.name} не стал есть {food.name}")   print(f"{self.name} съел {food.name}")
-        raise NotImplementedError("get_edible() должен быть переопределен")
+        self.name = name
 
 
 class Flower(Plant):
-    Edible = "Не съедобно"
-
-    def __init__(self, name):
-        super().__init__(name)
-        # так как отдельного метода не предусматривается для изменения состояния self.edible
-        # то self.edible будет меняться в конструкторе наследника
-        # базовый класс так же имеет свой конструктор, который нужно вызвать, поэтому
-        # делегируем наследнику вызов инициализатора базового класса (super().__init__)
-        self.edible = False  # съедобность
-
-    def get_edible(self):
-        return self.edible
+    edible = False
 
 
 class Fruit(Plant):
-    Edible = "Съедобно"
-
-    def __init__(self, name):
-        super().__init__(name)
-        self.edible = True  # съедобность
-
-    def get_edible(self):
-        return self.edible
+    edible = True
 
 
-flower = Flower('Цветик семицветик')
-fruit = Fruit('Заводной апельсин')
-"""
-Конструктор Plant для <class '__main__.Flower'>
-Конструктор Plant для <class '__main__.Fruit'>
-"""
-print(fruit.__dict__)
-print(flower.__dict__)
-"""
-{'edible': True, 'name': 'Заводной апельсин'}
-{'edible': False, 'name': 'Цветик семицветик'}
-"""
-predator = Predator('Волк с Уолл-Стрит')
-mammal = Mammal('Хатико')
+a1 = Predator('Волк с Уолл-Стрит')
+a2 = Mammal('Хатико')
+p1 = Flower('Цветик семицветик')
+p2 = Fruit('Заводной апельсин')
 
-mammal.eat(fruit)
-predator.eat(flower)
+print(a1.name)
+print(p1.name)
+
+print(a1.alive)
+print(a2.fed)
+a1.eat(p1)
+a2.eat(p2)
+print(a1.alive)
+print(a2.fed)
+
 """
-Хатико съел Заводной апельсин
+Волк с Уолл-Стрит
+Цветик семицветик
+True
+False
 Волк с Уолл-Стрит не стал есть Цветик семицветик
+Хатико съел Заводной апельсин
+False
+True
 """
-print(mammal.__dict__)
-print(predator.__dict__)
-"""
-{'alive': True, 'fed': True, 'name': 'Хатико'}
-{'alive': False, 'fed': False, 'name': 'Волк с Уолл-Стрит'}
-"""
-
-
