@@ -25,7 +25,7 @@ class Mammal(Animal):
 
 class Predator(Animal):
     def eat(self, food):
-        print(food.Edible) # 2. проверим состояние унаследованного атрибута класса,
+        print(food.Edible) # 2. проверим состояние унаследованного атрибута класса Plant,
         # но пользоваться будем атрибутами объекта
         if food.get_edible():
             self.alive = True
@@ -53,7 +53,6 @@ class Plant:
 
 
 class Flower(Plant):
-    Edible = "Не съедобно"
 
     def __init__(self, name):
         super().__init__(name)
@@ -62,18 +61,21 @@ class Flower(Plant):
         # базовый класс так же имеет свой конструктор, который нужно вызвать, поэтому
         # делегируем наследнику вызов инициализатора базового класса (super().__init__)
         self.edible = False  # съедобность
-
+        if self.Edible == "False":  # проверим, что унаследовали атрибут класса Edible из Plant
+            self.Edible = "Не съедобно"  # и изменим его состояние 
+            
     def get_edible(self):
         return self.edible
 
 
 class Fruit(Plant):
-    Edible = "Съедобно"
 
     def __init__(self, name):
         super().__init__(name)
         self.edible = True  # съедобность
-
+        if self.Edible == "False":
+            self.Edible = "Съедобно"
+            
     def get_edible(self):
         return self.edible
 
