@@ -10,17 +10,16 @@ class UrTube:
     Класс видеоХостинг, содержащий объекты видео и объекты пользователей,
     методы для работы с пользователями и с видеофайлами.
     """
-    def __init__(self):
-        self.current_user = None  # (текущий пользователь, User)
-        self.current_password = 0
-        self.current_age = 0
-        self.videos = []  # (список объектов Video)
-        self.users = []  # (список объектов User)
+    current_user = None  # (текущий пользователь, User)
+    current_password = 0
+    current_age = 0
+    videos = []  # (список объектов Video)
+    users = []  # (список объектов User)
 
     def search_users(self, nickname, password):
-        for i in self.users:
-            if nickname == i.nickname and hash(password) == i.password:
-                return i
+        for user in self.users:
+            if nickname == user.nickname and hash(password) == user.password:
+                return user
         return None
 
     def log_in(self, nickname, password):
@@ -91,6 +90,10 @@ class User:
     """
     “Класс пользователя, содержащий атрибуты: логин, пароль, возраст”
     """
+    nickname = ""  # имя пользователя
+    password = 0  # в хэшированном виде, число
+    age = 0  # возраст, число
+
     def __init__(self, nickname="", password="", age=0):
         self.nickname = nickname  # имя пользователя
         self.password = hash(password)  # в хэшированном виде, число
@@ -101,13 +104,17 @@ class Video:
     """
     “Класс видео, содержащий атрибуты: название, продолжительность, ограничение по возрасту”
     """
+    title = ""  # (заголовок, строка)
+    duration = 0  # (продолжительность, секунды)
+    time_now = 0  # (секунда остановки(изначально 0))
+    adult_mode = 0  # (ограничение по возрасту)
+
     def __new__(cls, *args, **kwargs):
         return object.__new__(cls)
 
     def __init__(self, title="", duration=0, adult_mode=False):
         self.title = title  # (заголовок, строка)
         self.duration = duration  # (продолжительность, секунды)
-        self.time_now = 0  # (секунда остановки(изначально 0))
         self.adult_mode = adult_mode  # (ограничение по возрасту)
 
 
