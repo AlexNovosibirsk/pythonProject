@@ -71,19 +71,28 @@ class UrTube:
                 result.append(video.title)
         return result
 
+    def search_video(self, name_video):
+        for video in self.videos:
+            if name_video == video.title:
+                return video
+        return None
+
     def watch_video(self, name_video):
         if self.current_user is None:
             print("Войдите в аккаунт, чтобы смотреть видео")
             return
-        elif self.current_age < 18:
-            print("Вам нет 18 лет, пожалуйста покиньте страницу")
+
+        video = self.search_video(name_video)
+        if video is None:
             return
-        for video in self.videos:
-            if name_video == video.title:
-                for video.time_now in range(1, video.duration + 1):
-                    time.sleep(0.1)
-                    print(video.time_now, end=" ")
-                print("Конец видео")
+        elif video.adult_mode and self.current_age < 18:
+            print(f"{self.current_user}, Вам нет 18 лет, пожалуйста покиньте страницу")
+        else:
+            print(f"{self.current_user} смотрит \"{name_video}\",", end=" ")
+            for video.time_now in range(1, video.duration + 1):
+                time.sleep(0.1)
+                print(video.time_now, end=" ")
+            print("Конец видео")
 
 
 class User:
@@ -107,7 +116,7 @@ class Video:
     title = ""  # (заголовок, строка)
     duration = 0  # (продолжительность, секунды)
     time_now = 0  # (секунда остановки(изначально 0))
-    adult_mode = 0  # (ограничение по возрасту)
+    adult_mode = False  # (ограничение по возрасту)
 
     def __new__(cls, *args, **kwargs):
         return object.__new__(cls)
@@ -132,22 +141,23 @@ ur.add_videos(v3)
 print(f"загружено {len(ur)} видео")
 
 # Проверка поиска
-print(ur.get_videos('лучший'))
-print(ur.get_videos('ПРОГ'))
+# print(ur.get_videos('лучший'))
+# print(ur.get_videos('ПРОГ'))
 
 ur.watch_video('Физика для всех')
-ur.register('vasya_pupkin', 'lolkekcheburek', 13)
-ur.register('urban_pythonist', 'iScX4vIJClb9YQavjAgF', 25)
-ur.register('vasya', 'F8098FM8fjm9jmi', 22)
-ur.register('vasya', 'F8098FM8fjm9jmi', 22)
-ur.log_in('vasya', 'F8098FM8fjm9jmi')
-print(ur.current_user)
-# Проверка на вход пользователя и возрастное ограничение
+ur.register('petya12', 'lolkekcheburek', 12)
+ur.register('urban_pythonist25', 'iScX4vIJClb9YQavjAgF', 25)
+ur.register('vasya22', 'F8098FM8fjm9jmi', 22)
+ur.register('vasya22', 'F8098FM8fjm9jmi', 22)
+ur.log_in('vasya22', 'F8098FM8fjm9jmi')
+# print(ur.current_user)
 ur.watch_video('Для чего девушкам парень программист?')
-ur.register('vasya_pupkin', 'lolkekcheburek', 13)
-ur.log_in('vasya_pupkin', 'lolkekcheburek')
+ur.register('petya12', 'lolkekcheburek', 12)
+ur.log_in('petya12', 'lolkekcheburek')
 ur.watch_video('Для чего девушкам парень программист?')
-ur.log_in('vasya', 'F8098FM8fjm9jmi')
+ur.log_in('vasya22', 'F8098FM8fjm9jmi')
+# ur.log_out()
+ur.watch_video('Для чего девушкам парень программист?')
 ur.watch_video('Физика для всех')
 print(str(ur))
 
@@ -166,17 +176,16 @@ print(str(ur))
 объект  "7" не является объектом видео
 файл "Физика для всех" добавлен
 загружено 3 видео
-['Лучший язык программирования 2024 года']
-['Лучший язык программирования 2024 года', 'Для чего девушкам парень программист?']
 Войдите в аккаунт, чтобы смотреть видео
-Пользователь vasya уже существует
-Пользователь vasya в аккаунте
-vasya
-1 2 3 4 5 6 7 8 9 10 Конец видео
-Пользователь vasya_pupkin уже существует
-Пользователь vasya_pupkin в аккаунте
-Вам нет 18 лет, пожалуйста покиньте страницу
-Пользователь vasya в аккаунте
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 Конец видео
+Пользователь vasya22 уже существует
+Пользователь vasya22 в аккаунте
+vasya22 смотрит "Для чего девушкам парень программист?", 1 2 3 4 5 6 7 8 9 10 Конец видео
+Пользователь petya12 уже существует
+Пользователь petya12 в аккаунте
+petya12, Вам нет 18 лет, пожалуйста покиньте страницу
+Пользователь vasya22 в аккаунте
+vasya22 смотрит "Для чего девушкам парень программист?", 1 2 3 4 5 6 7 8 9 10 Конец видео
+vasya22 смотрит "Физика для всех", 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 Конец видео
 загружено 3 видео, зарегистрировано 3 пользователей
 """
+
