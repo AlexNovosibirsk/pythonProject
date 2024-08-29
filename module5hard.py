@@ -73,7 +73,7 @@ class UrTube:
 
     def log_out(self):
         self.current_user = None
-
+        self.current_User_Object = None
 
 class User:
     def __init__(self, nickname, password, age):
