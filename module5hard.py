@@ -3,17 +3,18 @@
 """
 import time
 
+
 class UrTube:
 
     def __init__(self):
-        self.current_User_Object = None  # (текущий пользователь, User)
-        self.current_user = ""    # (текущий пользователь, NickName)
-        self.videos = []          # (список объектов Video)
-        self.users  = []          # (список объектов User)
+        self.current_User_Object = None  # текущий пользователь, User
+        self.current_user = ""           # текущий пользователь, NickName
+        self.videos = []                 # список объектов Video
+        self.users = []                  # список объектов User
 
     def log_in(self, nickname, password):
         for user in self.users:
-            if nickname == user.nickname and hash(password) == user.password:
+            if (nickname, hash(password)) == user.get_name_pass():
                 self.current_User_Object = user
                 self.current_user = user.nickname
                 break
@@ -81,14 +82,17 @@ class User:
         self.password = hash(password)  # в хэшированном виде, число
         self.age = age                  # возраст, число
 
+    def get_name_pass(self):
+        return self.nickname, self.password
+
 
 class Video:
 
     def __init__(self, title="", duration=0, adult_mode=False):
-        self.title = title  # (заголовок, строка)
-        self.duration = duration  # (продолжительность, секунды)
-        self.adult_mode = adult_mode  # (ограничение по возрасту)
-        self.time_now = 0  # (секунда остановки(изначально 0))
+        self.title = title            # заголовок, строка
+        self.duration = duration      # продолжительность, секунды
+        self.adult_mode = adult_mode  # ограничение по возрасту
+        self.time_now = 0             # секунда остановки (изначально 0)
 
     def __str__(self):
         return self.title
@@ -124,6 +128,6 @@ print(ur.current_user)
 ur.log_in('petya12', 'lolkekcheburek')
 ur.watch_video('Физика для всех')
 ur.watch_video('Для чего девушкам парень программист?')
+ur.log_in('vasya22', 'F8098FM8fjm9jmi')
+ur.watch_video('Для чего девушкам парень программист?')
 print(ur.current_user)
-
-
