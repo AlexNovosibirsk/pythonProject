@@ -18,7 +18,7 @@
 Метод __is_valid_color - служебный, принимает параметры r, g, b, который проверяет корректность переданных значений перед установкой нового цвета. Корректным цвет: все значения r, g и b - целые числа в диапазоне от 0 до 255 (включительно).
 Метод set_color принимает параметры r, g, b - числа и изменяет атрибут __color на соответствующие значения, предварительно проверив их на корректность. Если введены некорректные данные, то цвет остаётся прежним.
 Метод __is_valid_sides - служебный, принимает неограниченное кол-во сторон, возвращает True если все стороны целые положительные числа и кол-во новых сторон совпадает с текущим, False - во всех остальных случаях.
-Метод get_sides должен возвращать значение я атрибута __sides.
+Метод get_sides должен возвращать значение атрибута __sides.
 Метод __len__ должен возвращать периметр фигуры.
 Метод set_sides(self, *new_sides) должен принимать новые стороны, если их количество не равно sides_count, то не изменять, в противном случае - менять.
 
@@ -85,37 +85,27 @@ print(cube1.get_volume())
 Помните, служебные инкапсулированные методы можно и нужно использовать только внутри текущего класса.
 Вам не запрещается вводить дополнительные атрибуты и методы, творите, но не переборщите!
 """
+import math
 
 
 class Figure:
     sides_count = 0  # Атрибуты класса Figure
-    __sides = []  # (список сторон(целые числа))
-    __color = []  # (список цветов в формате RGB)
-    filled = False  # (закрашенный, bool)
 
     def __init__(self, *args):
-
-        for i in range(len(args[0])):
-            self.__color.append(args[0][i])
-        for i in range(self.sides_count):
-            self.__sides[i] = args[1]
+        self.__sides = []  # (список сторон(целые числа))
+        match self.sides_count:
+            case 12:
+                for i in range(self.sides_count):
+                    self.__sides.append(args[1])
+            case 1:
+                self.__sides.append(args[1])
+            case 3:
+                for i in range(self.sides_count):
+                    self.__sides.append(args[i+1])
 
     def set_sides(self, *new_sides):
-        if self.__is_valid_sides(new_sides):
-            for i in range(len(self.__sides)):
-                self.__sides[i] = new_sides[i]
-
-    def __is_valid_sides(self, *args):
-        if self.sides_count == len(args[0]):
-            for i in range(len(args[0])):
-                if not isinstance(args[0][i], int) or args[0][i] < 0:
-                    return False
-            return True
-
-    def resize_sides(self):
-        self.__sides.clear()
-        for _ in range(self.sides_count):
-            self.__sides.append(1)
+        for i in range(len(self.__sides)):
+            self.__sides[i] = new_sides[i]
 
     def get_sides(self):
         return self.__sides
@@ -123,38 +113,57 @@ class Figure:
 
 class Cube(Figure):
     sides_count = 12
+
     def __init__(self, *args):
-        self.resize_sides()
         super().__init__(*args)
+
+    def get_volume(self):
+        side = self.get_sides()
+        return side[0]**3
+
+
 class Triangle(Figure):
     sides_count = 3
+
     def __init__(self, *args):
-        self.resize_sides()
         super().__init__(*args)
+
+    def get_square(self):
+        sides = self.get_sides()
+        p = (sides[0] + sides[1] + sides[2])/2
+        S = math.sqrt(p*(p-sides[0])*(p-sides[1])*(p-sides[2]))
+        return S
+
+
 class Circle(Figure):
     sides_count = 1
+
     def __init__(self, *args):
-        self.resize_sides()
+        self.__radius = None  # рассчитать исходя из длины окружности (одной единственной стороны).
         super().__init__(*args)
 
+    def get_square(self):  # возвращает площадь круга (можно рассчитать как через длину, так и через радиус).
+        L = self.get_sides()
+        self.__radius = L[0] / (2 * math.pi)
+        S = math.pi * self.__radius**2
+        return S
 
-"""
-Атрибуты класса Cube: sides_count = 12
-Каждый объект класса Cube должен обладать следующими атрибутами и методами:
-Все атрибуты и методы класса Figure.
-Переопределить __sides сделав список из 12 одинаковых сторон (передаётся 1 сторона)
-Метод get_volume, возвращает объём куба.
-"""
 
-cube = Cube((222, 35, 130), 7)
-triangle = Triangle((115, 127, 195), 7, 10, 12)
-circle = Circle((27, 180, 45), 17)
+cube = Cube((222, 35, 130), 4)
+triangle = Triangle((115, 127, 195), 15, 18, 12)
+circle = Circle((27, 180, 45), 19)
+print(cube.get_sides())
+print(triangle.get_sides())
+print(circle.get_sides())
 
+print(cube.get_volume())
+print(circle.get_square())
+print(triangle.get_square())
 # Проверка на изменение сторон:
-cube.set_sides(5, 3, 12, 4, 5)  # Не изменится
-print(cube.get_sides())
-cube.set_sides(8,8,8,8,8,8,8,8,8,8,8,8)
-print(cube.get_sides())
+# cube.set_sides(5, 3, 12, 4, 5)  # Не изменится
+# print(cube.get_sides())
+# cube.set_sides(8,8,8,8,8,8,8,8,8,8,8,8)
+# print(cube.get_sides())
 # triangle.set_sides(5, 3, "12")
 # circle.set_sides(81)
 # print(triangle.get_sides())
