@@ -22,28 +22,32 @@ class Shop:
         txt = ""
         try:
             file = open(self.__file_name, "r")
+            try:
+                txt = file.read()
+            finally:
+                file.close()
         except FileNotFoundError:
             print("file not found")
-            return txt
-        else:
-            txt = file.read()
-            file.close()
-        finally:
-            return txt
+        except:
+            print("???")
+        return txt
 
     # принимает неограниченное количество объектов класса Product.
     # Добавляет в файл __file_name каждый продукт из products, если его ещё нет в файле (по названию).
     # Если такой продукт уже есть, то не добавляет и выводит строку 'Продукт <название> уже есть в магазине'
     def add(self, *products):
         str_product = self.get_products()
-        file = open(self.__file_name, "a")
-        for pr in products:
-            if pr.name in str_product:
-                print(f"Продукт {pr.name}, {pr.weight}, {pr.category} уже есть в магазине")
-            else:
-                file.write(str(pr) + "\n")
-        file.close()
-
+        try:
+            with open(self.__file_name, "a") as file:
+                for pr in products:
+                    if pr.name in str_product:
+                        print(f"Продукт {pr.name}, {pr.weight}, {pr.category} уже есть в магазине")
+                    else:
+                        file.write(str(pr) + "\n")
+        except FileNotFoundError:
+            pass
+        except:
+            pass
 
 def main():
     s1 = Shop()
