@@ -11,10 +11,11 @@ info = [
 
 def custom_write(file_name, strings):
     strings_positions = {}
-    with open(file_name, "w", encoding="utf-8") as file:
-        for i in range(len(strings)):
-            strings_positions[i + 1, file.tell()] = strings[i]
-            file.write(strings[i] + "\n")
+    file = open(file_name, "w", encoding="utf-8")
+    for i in range(len(strings)):
+        strings_positions[i + 1, file.tell()] = strings[i]
+        file.write(strings[i] + "\n")
+    file.close()
     return strings_positions
 
 
