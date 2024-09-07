@@ -7,7 +7,7 @@ Walt Whitman - O Captain! My Captain!.txt
 
 
 class WordsFinder:
-    to_del = [',', '.', '=', '!', '?', ';', ':', ' — ']
+    symbol_to_delete = [',', '.', '=', '!', '?', ';', ':', ' — ']
 
     def __init__(self, *args):
         self.file_names = []
@@ -19,11 +19,10 @@ class WordsFinder:
         for name in self.file_names:
             with open(name, 'r', encoding='utf-8') as file:
                 string = file.read()
-                for i in range(len(self.to_del)):
-                    string = string.replace(self.to_del[i], ' ').lower()
+                for i in range(len(self.symbol_to_delete)):
+                    string = string.replace(self.symbol_to_delete[i], ' ').lower()
                 list_w = string.split()
                 all_words.update({name: list_w})
-        # print(all_words.get('Rudyard Kipling - If.txt'))
         return all_words
 
     def find(self, word):
