@@ -29,7 +29,7 @@ class WordsFinder:
         dict_result = dict()
         for name, words in self.get_all_words().items():
             if word.lower() in words:
-                dict_result.update({name: word})
+                dict_result.update({name: words.index(word.lower())})
         return dict_result
 
     def count(self, word):
@@ -42,7 +42,8 @@ wf = WordsFinder('Mother Goose - Monday’s Child.txt',
                  'Rudyard Kipling - If.txt',
                  'Walt Whitman - O Captain! My Captain!.txt')
 
-print(wf.find("child"))
-print(wf.count("If"))
+print(wf.get_all_words())
+print(wf.find("and"))
+print(wf.count("and"))
 
 
