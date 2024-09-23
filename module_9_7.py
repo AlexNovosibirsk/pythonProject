@@ -6,7 +6,13 @@
 def is_prime(func):
     def wrapper(*args):
         res = func(*args)
-        if res % 2 == 0:
+
+        isPrime = False
+        for i in range(2, res):
+            if res % i == 0:
+                isPrime = True
+                break
+        if isPrime:
             print("Составное")
         else:
             print("Простое")
@@ -21,4 +27,7 @@ def sum_three(*args):
 
 
 print(sum_three(2, 3, 6))
-print(sum_three(2, 3, 6, 1))
+print(sum_three(2, 3, 6, 1,5,9,23))
+
+
+
