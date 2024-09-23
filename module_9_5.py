@@ -1,13 +1,5 @@
 """
 Задача "Range - это просто":
-
-__init__(self, start, stop, step=1) - принимающий значения старта и конца итерации, а также шага.
-В этом методе в первую очередь проверяется step на равенство 0.
-Если равно, то выбрасывается исключение StepValueError('шаг не может быть равен 0')
-__iter__ - метод сбрасывающий значение pointer на start и возвращающий сам объект итератора.
-__next__ - метод увеличивающий атрибут pointer на step.
-В зависимости от знака атрибута step итерация завершиться либо когда pointer станет больше stop,
-либо меньше stop. Учтите это при описании метода.
 """
 
 
@@ -34,13 +26,10 @@ class Iterator:
 
     def __next__(self):
         self.pointer += self.step
-
         if self.pointer < self.stop and self.step < 0:
             raise StopIteration()
-
-        if self.pointer > self.stop and self.step > 0:
+        elif self.pointer > self.stop and self.step > 0:
             raise StopIteration()
-
         return self.pointer
 
 
