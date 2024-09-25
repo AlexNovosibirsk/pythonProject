@@ -4,8 +4,6 @@
 from threading import Thread, Lock
 from time import sleep
 
-lock = Lock()
-
 
 class Knight(Thread):
 
@@ -15,6 +13,7 @@ class Knight(Thread):
         self.power = power  # сила рыцаря. (int)
         self.color = color
         self.ammount_enemies = 100
+        self.lock = Lock()
 
     def run(self):
         cnt_days = 0
@@ -26,22 +25,24 @@ class Knight(Thread):
             if self.ammount_enemies < 0:
                 self.ammount_enemies = 0
 
-            with lock:  # для корректного вывода применим мьютекс
+            with self.lock:  # для корректного вывода применим мьютекс
                 print(self.color + f"{self.name}, сражается {cnt_days} день(дня)..., "
                                    f"осталось {self.ammount_enemies} воинов" + "\033[0m")
             sleep(0.45)
 
-        with lock:
+        with self.lock:
             print("\033[92m" + f"{self.name} одержал победу спустя "
                                f"{cnt_days} дней(дня)!" + "\033[0m")
 
 
-first_knight = Knight('Sir Lancelot', 7, '\033[94m')
-second_knight = Knight("Sir Galahad", 12, '\033[93m')
+if __name__ == "__main__":
 
-first_knight.start()
-second_knight.start()
+    first_knight = Knight('Sir Lancelot', 7, '\033[94m')
+    second_knight = Knight("Sir Galahad", 12, '\033[93m')
 
-first_knight.join()
-second_knight.join()
-print("Все битвы закончились!")
+    first_knight.start()
+    second_knight.start()
+    first_knight.join()
+    second_knight.join()
+
+    print("Все битвы закончились!")
