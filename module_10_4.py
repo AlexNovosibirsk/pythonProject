@@ -74,6 +74,7 @@ class Cafe:
                 print(f"Свободно столов: {cnt_free_tables}, очереди нет")
                 break
 
+
 if __name__ == "__main__":
     # Создание столов
     tables = [Table(number) for number in range(1, 6)]
