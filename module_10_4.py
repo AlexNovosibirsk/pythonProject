@@ -61,7 +61,8 @@ class Cafe:
                 if self.tables[i].guest is not None and not self.tables[i].guest.is_alive():
                     print(f"{self.tables[i].guest.name} покушал и ушёл. Стол номер {self.tables[i].number} свободен")
                     self.tables[i].guest = None
-
+                else:
+                    continue
                 free_table_index, cnt_free_tables = self.search_free_table()
                 if free_table_index is not None and not self.queue.empty():
                     next_guest = self.queue.get()
