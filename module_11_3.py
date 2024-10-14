@@ -15,8 +15,6 @@
   - Другие интересные свойства объекта, учитывая его тип (по желанию).
 """
 
-import requests
-from pprint import pprint
 import inspect
 import sys
 
@@ -29,45 +27,36 @@ class SomeClass:
         self.attribute_2 = "txt"
         self.attribute_3 = 12.0
 
-    def some_metod_1(self):
+    def some_method_1(self):
         self.attribute_1 += 1
 
-    def some_metod_2(self, txt):
+    def some_method_2(self, txt):
         self.attribute_2 = txt
 
     @staticmethod
     def introspection_info(obj):
         dict_info = dict()
 
-        str_ = str(type(obj))
-        dict_info.update({'type': str_.split("\'")[1]})
+        dict_info['type'] = type(obj).__name__
 
-        # Создадим два списка вызываемых и невызываемых атрибутов
-        # Dunder-методы и атрибуты исключим из списков, так как их слишком много
-        list_methods = [arg for arg in dir(obj)
-                        if callable(getattr(obj, arg)) and arg.startswith('__') is False]
-        dict_info.update({'methods': list_methods})
+        # Dunder-методы исключим, так как их слишком много
+        dict_info['methods'] = [m for m in dir(obj) if callable(getattr(obj, m)) and not m.startswith('__')]
+        dict_info['attributes'] = [a for a in dir(obj) if not callable(getattr(obj, a)) and not a.startswith('__')]
 
-        list_attributes = [arg for arg in dir(obj)
-                           if callable(getattr(obj, arg)) is not True and arg.startswith('__') is False]
-        dict_info.update({'attributes': list_attributes})
+        module = inspect.getmodule(obj)
+        dict_info['module'] = module.__name__ if module else None
 
-        str_ = str(inspect.getmodule(obj))
-        if str_ == "None":
-            dict_info.update({'module': None})
-        else:
-            dict_info.update({'module': str_.split("\'")[1]})
+        dict_info['sizeof'] = sys.getsizeof(obj)
 
-        dict_info.update({'sizeof': sys.getsizeof(obj)})
+        dict_info['id'] = id(obj)
+
         return dict_info
 
 
 if __name__ == "__main__":
-
     someClass = SomeClass()
-    result = someClass.introspection_info(someClass)
-    # print(result)
-    for item in result.items():
-        print(item)
+    result = SomeClass.introspection_info(someClass)
+    for key, value in result.items():
+        print(f"{key}: {value}")
 
 
