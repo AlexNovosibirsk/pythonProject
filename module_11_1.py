@@ -8,59 +8,62 @@ pandas - считать данные из файла, выполнить про�
 matplotlib - визуализировать данные с помощью библиотеки любым удобным для вас инструментом из библиотеки.
 """
 
+# Для исследования возьмем библиотеки pandas и matplotlib
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
+# https://github.com/AlexNovosibirsk/pythonProject/blob/master/data.csv
 class Explorer:
 
-    def __new__(cls, *args, **kwargs):
-        cls.df = None
+    def __init__(self):
+        self.df = None
         try:
-            cls.df = pd.read_csv("data.csv")
+            self.df = pd.read_csv("data.csv")
         except FileNotFoundError:
             print("FileNotFoundError")
-        instance = super(Explorer, cls).__new__(cls)
-        return instance
-
-    def __init__(self):
-        pass
 
     def describe(self):
-        print(self.df.dtypes)  # выведем типы данных в таблице
-        print(self.df.describe())  # и некоторые статистические данные
+        if self.df is not None:
+            print(self.df.dtypes)  # выведем типы данных в таблице
+            print(self.df.describe())  # и некоторые статистические данные
 
     def print_head(self, num):
-        print(self.df.head(num))
+        if self.df is not None:
+            print(self.df.head(num))
 
     def print_tail(self, num):
-        print(self.df.tail(num))
+        if self.df is not None:
+            print(self.df.tail(num))
 
-    def print_sort(self):
-        pass
+    def print_sort(self):  # Отсортируем по указанной колонке
+        if self.df is not None:
+            print(self.df.sort_values(by="Duration"))
 
 # далее, используя библиотеку matplotlib, построим график и гистограмму по данным из data.csv
     def create_plot(self):  # построим график по одной из колонок (Duration) таблицы
-        x = self.df.index.tolist()
-        y = self.df["Duration"].values
-        plt.plot(x, y, color='red', )
-        plt.xlabel('Ось х')
-        plt.ylabel('Ось y')
-        plt.title('график')
-        plt.show()
+        if self.df is not None:
+            x = self.df.index.tolist()
+            y = self.df["Duration"].values
+            plt.plot(x, y, color='red', )
+            plt.xlabel('Ось х')
+            plt.ylabel('Ось y')
+            plt.title('график')
+            plt.show()
 
     def create_gist(self):  # также построим гистограмму
-        plt.hist(self.df["Duration"], label="Duration")
-        plt.xlabel("Ось х")
-        plt.ylabel("Ось y")
-        plt.legend()
-        plt.show()
+        if self.df is not None:
+            plt.hist(self.df["Duration"], label="Duration")
+            plt.xlabel("Ось х")
+            plt.ylabel("Ось y")
+            plt.legend()
+            plt.show()
 
 
 if __name__ == "__main__":
     exp = Explorer()
     exp.describe()
     exp.print_head(10)
+    exp.print_sort()
     exp.create_plot()
     exp.create_gist()
 
@@ -69,4 +72,6 @@ if __name__ == "__main__":
 # Благодаря простому интерфейсу библиотек можно организовать необходимый анализ
 # данных с последующим выводом результатов в виде графиков, гистограмм, круговых диаграмм...
 
-# https://pythonru.com/biblioteki/pyplot-uroki
+
+
+# https://pythonru.com/biblioteki/pyplot-uroki (пригодится)
