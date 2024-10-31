@@ -15,6 +15,11 @@ class UserState(StatesGroup):
     weight = State()
 
 
+@dp.message_handler(commands=["start"])
+async def start_message(message):
+    await message.answer('Привет! Я бот помогающий твоему здоровью.')
+
+
 @dp.message_handler(text=["Calories", "Калории"])
 async def set_age(message):
     await message.answer("Укажите свой возраст:")
@@ -41,11 +46,12 @@ async def set_weight(message, state):
 async def send_calories(message, state):
     await state.update_data(weight=message.text)
     data = await state.get_data()
-    calories_for_male   = 10 * int(data['weight']) + 6.25 * int(data['growth']) + 5 * int(data['age']) + 5
+    calories_for_male = 10 * int(data['weight']) + 6.25 * int(data['growth']) + 5 * int(data['age']) + 5
     calories_for_female = 10 * int(data['weight']) + 6.25 * int(data['growth']) + 5 * int(data['age']) - 161
-    await message.answer(f"Калории для мужчин: {calories_for_male}")
-    await message.answer(f"Калории для женщин: {calories_for_female}")
+    await message.answer(f"Норма калории для мужчин: {calories_for_male}")
+    await message.answer(f"Норма калории для женщин: {calories_for_female}")
     await state.finish()
+
 
 # 1. Упрощенный вариант формулы Миффлина-Сан Жеора:
 # для мужчин: 10 х вес (кг) + 6,25 x рост (см) – 5 х возраст (г) + 5;
